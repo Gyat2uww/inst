@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Open Instagram</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #2e015a, #6829b7);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            color: white;
+        }
+
+        .container {
+            text-align: center;
+            background-color: #472b71;
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            max-width: 90%;
+        }
+
+        button {
+            background-color: #835bdb;
+            border: none;
+            padding: 15px 30px;
+            color: white;
+            font-size: 16px;
+            border-radius: 50px;
+            cursor: pointer;
+            margin: 10px;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #6e48c5;
+        }
+
+        .instructions {
+            margin-top: 20px;
+            font-size: 0.9em;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <button id="openInstagram">Open Instagram</button>
+        <div class="instructions" id="instructions"></div>
+    </div>
+
+    <script>
+        const isTikTokBrowser = /TikTok|WebView/i.test(navigator.userAgent);
+        const instagramAppLink = 'instagram://user?username=virgin_sony';
+        const instagramWebLink = 'https://www.instagram.com/virgin_sony?igsh=OGQ5ZDc2ODk2ZA==';
+        const fallbackLink = 'https://www.instagram.com/virgin_sony';
+
+        function openInstagram() {
+            window.location.href = instagramAppLink;
+            
+            setTimeout(() => {
+                if (!document.hidden) {
+                    window.location.href = isIOS() ? instagramWebLink : fallbackLink;
+                }
+            }, 500);
+        }
+
+        function isIOS() {
+            return /iPhone|iPad|iPod/i.test(navigator.userAgent);
+        }
+
+        function setupButton() {
+            const button = document.getElementById('openInstagram');
+            
+            if (isTikTokBrowser) {
+                button.style.display = 'none';
+                document.getElementById('instructions').innerHTML = `
+                    <p>⚠️ TikTok блокирует прямые переходы в Instagram</p>
+                    <p>1. Нажмите "Поделиться"<br>
+                    2. Выберите "Скопировать ссылку"<br>
+                    3. Вставьте в Safari/Chrome</p>
+                `;
+            } else {
+                button.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    openInstagram();
+                });
+            }
+        }
+
+        setupButton();
+    </script>
+</body>
+</html>
